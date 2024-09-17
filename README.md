@@ -18,16 +18,21 @@ This project aims to provide a clean and user-friendly interface, generate insig
 1. Python 3.x
 
 # Current Progress
-
+1. Currently have the following methods (inside packetSniffer.py)
+   a. ethernet_frame - retrieves the data
+   b. get_mac_address - gets the mac addresses
+   c. ipv4_packet - retrieves ipv4 addresses of packet (new)
+   d. ipv4 - formats IP (new)
+   e. icmp_packet and tcp_segment - retrives information from the packet (new)
+   
 
 # Cloning this repository:
-git clone https://github.com/cyrolite/packet-sniffer.git
-cd packet-sniffer
-Install the required Python libraries:
+1. git clone https://github.com/cyrolite/packet-sniffer.git
+2. cd packet-sniffer
+3. Install the required Python libraries:
 (nil as of now)
 
 # How to Run
-Run the packet sniffer:
 run the following command: 
 1. python3 packetSniffer.py 
 

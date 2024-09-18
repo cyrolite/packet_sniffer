@@ -30,6 +30,8 @@ This project aims to provide a clean and user-friendly interface, generate insig
    a. a user interface that runs the packet sniffing, and buttons that help start / stop the packet sniffing <br/>
    b. added darkmode (new) (work in progress) <br/>
    c. updated interface to display the packets and the value of ip (currently hardcoded, will be adding that soon) <br/>
+   d. enabled users to save packet data (new)
+
 
 # Cloning this repository:
 1. git clone https://github.com/cyrolite/packet-sniffer.git

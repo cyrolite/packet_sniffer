@@ -24,23 +24,25 @@ This project aims to provide a clean and user-friendly interface, generate insig
    c. ipv4_packet - retrieves ipv4 addresses of packet <br/>
    d. ipv4 - formats IP <br/>
    e. icmp_packet and tcp_segment - retrives information from the packet <br/>
-   f. formatting of printing of data packets (new) <br/>
-   g. unpacking TCP, UDP, ICMP packets and printing them out in order (new) <br/>
-   
+   f. formatting of printing of data packets <br/>
+   g. unpacking TCP, UDP, ICMP packets and printing them out in order <br/>
+2. User Interface (in progress) (new!) <br/>
+   a. a user interface that runs the packet sniffing, and buttons that help start / stop the packet sniffing (new) <br/>
 
 # Cloning this repository:
 1. git clone https://github.com/cyrolite/packet-sniffer.git
 2. cd packet-sniffer
-3. Install the required Python libraries:
+3. Install the required Python libraries: <br/>
 (nil as of now)
 
 # How to Run
+**Note: Ensure that the files are in the same directory** <br/>
 run the following command: 
-1. python3 packetSniffer.py <br/><br/>
+1. python3 frontend.py <br/><br/>
 inside your CLI.
 
 # Usage
 To be confirmed
 
 # Next Steps for Development:
-Further implementations of backend features (such as IP tracking)
+Further implementations of frontend features (such as IP tracking)

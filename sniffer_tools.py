@@ -12,6 +12,53 @@ DATA_TAB_2 = '\t\t '
 DATA_TAB_3 = '\t\t\t'
 DATA_TAB_4 = '\t\t\t\t '
 
+# global flags to manage the state of the sniffer
+sniffing_active = False
+sniffing_paused = False
+
+# method to start sniffing for packets
+def start_sniffing():
+    """Starts sniffing packets and returns data to the frontend."""
+    global sniffing_active
+    sniffing_active = True
+
+    # create raw socket for sniffing
+    conn = socket.socket(socket.AF_INET, socket.SOCK_RAW, socket.IPPROTO_IP)
+    ip = socket.gethostbyname(socket.gethostname())
+    conn.bind((ip, 0))
+    
+    # enable receiving all packets
+    conn.ioctl(socket.SIO_RCVALL, socket.RCVALL_ON)
+
+    while sniffing_active:
+        if not sniffing_paused:  # Only sniff when not paused
+            raw_data, addr = conn.recvfrom(65536)
+            try:
+                # try decoding the raw packet data
+                return raw_data.decode('utf-8', 'ignore')
+            except UnicodeDecodeError:
+                # return a fallback in case the packet can't be decoded
+                return repr(raw_data)
+
+# method to stop sniffing packets
+def stop_sniffing():
+    """Stops the packet sniffing entirely."""
+    global sniffing_active
+    sniffing_active = False
+
+# method to pause sniffing packets
+def pause_sniffing():
+    """Pauses the packet sniffing temporarily."""
+    global sniffing_paused
+    sniffing_paused = True
+
+# method to resume sniffing packets
+def resume_sniffing():
+    """Resumes packet sniffing after being paused."""
+    global sniffing_paused
+    sniffing_paused = False
+
+
 
 # unpacking of ethernet frames
 def ethernet_frame(data):

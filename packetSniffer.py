@@ -2,6 +2,17 @@ import socket
 import struct
 import textwrap
 
+TAB_1 = '\t - '
+TAB_2 = '\t\t - '
+TAB_3 = '\t\t\t - '
+TAB_4 = '\t\t\t\t - '
+
+DATA_TAB_1 = '\t '
+DATA_TAB_2 = '\t\t '
+DATA_TAB_3 = '\t\t\t'
+DATA_TAB_4 = '\t\t\t\t '
+
+
 # unpacking of ethernet frames
 def ethernet_frame(data):
     # grabs first 14 bytes and unpack the data passed into the function 
@@ -73,6 +84,23 @@ def tcp_segment(data):
     # returns all information, including the payload
     return src_port, dest_port, seq, acknowledgement, flags_urg, flags_ack, flags_psh, flags_rst, flags_syn, flags_fin, data[offset:]
 
+# unpacks UDP segment
+def udp_segment(data):
+    # retrieves information from the packet
+    src_port, dest_port, size = struct.unpack('! H H 2x H', data[:8])
+
+    # returns information
+    return src_port, dest_port, size, data[:8]
+
+# helps format multi line data
+def format_multi_line_data(prefix, string, size=80):
+    size -= len(prefix)
+    if isinstance(string, bytes):
+        string = ''.join(r'\x{:02x}'.format(byte) for byte in string)
+        if size % 2:
+            size -= 1
+    return '\n'.join([prefix + line for line in textwrap.wrap(string, size)])
+
 
 def main():
     # creates a socket for incoming network traffic flow, and ensures that the script
@@ -90,17 +118,59 @@ def main():
 
     conn.ioctl(socket.SIO_RCVALL , socket.RCVALL_ON)
 
-    while True:
-        raw_data , addr = conn.recvfrom(65536)
-
-    # loop to listen for data
+   # loop to listen for data
     while True:
         # captures raw data and the address received from the socket
         raw_data, addr = conn.recvfrom(65536)
 
         dest, src, eth_proto, data = ethernet_frame(raw_data)
         print('\nEthernet frame:')
-        print('Destination: {}, Source: {}, Protocol: {}\n'.format(dest, src, eth_proto))
+        print(TAB_1 + 'Destination: {}, Source: {}, Protocol: {}\n'.format(dest, src, eth_proto))
+
+        # check ethernet protocol (8)
+        if eth_proto == 8:
+            (version, header_length, ttl, proto, src, target, data) = ipv4_packet(data)
+            print(TAB_1 + 'IPV4 Packet: ')
+            print(TAB_2 + 'Version: {}, Header Length: {}, TTL: {}'.format(version, header_length, ttl))
+            print(TAB_2 + 'Protocol: {}, Source: {}, Target: {}'.format(proto, src, target))
+
+            # checks proto
+            # ICMP
+            if proto == 1:
+                icmp_type, code, checksum, data = icmp_packet(data)
+                print(TAB_1 + 'ICMP Packet: ')
+                print(TAB_2 + 'Type: {}, Code: {}, Checksum: {}'.format(icmp_type, code, checksum))
+                print(TAB_2 + 'Data: ')
+                print(format_multi_line_data(DATA_TAB_3, data))
+            
+            # TCP
+            elif proto == 6:
+                src_port, dest_port, seq, acknowledgement, flags_urg, flags_ack, flags_psh, flags_rst, flags_syn, flags_fin, data = tcp_segment(data)
+                print(TAB_1 + 'TCP Segment: ')
+                print(TAB_2 + 'Source Port: {}, Destination Port: {}'.format(src_port, dest_port))
+                print(TAB_2 + 'Sequence : {}, Acknowledgement: {}'.format(seq, acknowledgement))
+                print(TAB_2 + 'Flags: ')
+                print(TAB_3 + 'URG: {}, ACK: {}, PSH: {}, RST: {}, SYN: {}, FIN: {}'.format(
+                    flags_urg, flags_ack, flags_psh, flags_rst, flags_syn, flags_fin))
+                print(TAB_2 + 'Data: ')
+                print(format_multi_line_data(DATA_TAB_3, data))
+
+            # UDP
+            elif proto == 17:
+                src_port, dest_port, length, data = udp_segment(data)
+                print(TAB_1 + 'UDP Segment: ')
+                print(TAB_2 + 'Source Port: {}, Destination Port: {}, Length: {}'.format(src_port, dest_port, length))
+                print(TAB_2 + 'Data :')
+                print(format_multi_line_data(DATA_TAB_3, data))
+            
+            # other types of data
+            else:
+                print(TAB_1 + 'Data: ')
+                print(format_multi_line_data(DATA_TAB_2, data))
+        
+        else:
+            print('Data: ')
+            print(format_multi_line_data(DATA_TAB_1, data))
 
 
 if __name__ == "__main__":

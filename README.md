@@ -27,7 +27,9 @@ This project aims to provide a clean and user-friendly interface, generate insig
    f. formatting of printing of data packets <br/>
    g. unpacking TCP, UDP, ICMP packets and printing them out in order <br/>
 2. User Interface (in progress) (new!) <br/>
-   a. a user interface that runs the packet sniffing, and buttons that help start / stop the packet sniffing (new) <br/>
+   a. a user interface that runs the packet sniffing, and buttons that help start / stop the packet sniffing <br/>
+   b. added darkmode (new) (work in progress) <br/>
+   c. updated interface to display the packets and the value of ip (currently hardcoded, will be adding that soon) <br/>
 
 # Cloning this repository:
 1. git clone https://github.com/cyrolite/packet-sniffer.git
@@ -45,4 +47,5 @@ inside your CLI.
 To be confirmed
 
 # Next Steps for Development:
-Further implementations of frontend features (such as IP tracking)
+Further implementations of frontend features
+By next push, there is an aim to display the correct IP, as well as improve the UI 

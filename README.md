@@ -18,12 +18,14 @@ This project aims to provide a clean and user-friendly interface, generate insig
 1. Python 3.x
 
 # Current Progress
-1. Currently have the following methods (inside packetSniffer.py)
-   a. ethernet_frame - retrieves the data
-   b. get_mac_address - gets the mac addresses
-   c. ipv4_packet - retrieves ipv4 addresses of packet (new)
-   d. ipv4 - formats IP (new)
-   e. icmp_packet and tcp_segment - retrives information from the packet (new)
+1. Currently have the following methods (inside packetSniffer.py)<br/>
+   a. ethernet_frame - retrieves the data<br/>
+   b. get_mac_address - gets the mac addresses<br/>
+   c. ipv4_packet - retrieves ipv4 addresses of packet <br/>
+   d. ipv4 - formats IP <br/>
+   e. icmp_packet and tcp_segment - retrives information from the packet <br/>
+   f. formatting of printing of data packets (new) <br/>
+   g. unpacking TCP, UDP, ICMP packets and printing them out in order (new) <br/>
    
 
 # Cloning this repository:
@@ -34,8 +36,7 @@ This project aims to provide a clean and user-friendly interface, generate insig
 
 # How to Run
 run the following command: 
-1. python3 packetSniffer.py 
-
+1. python3 packetSniffer.py <br/><br/>
 inside your CLI.
 
 # Usage
